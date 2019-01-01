@@ -14,6 +14,8 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class HeroService {
+  private heroesUrl = 'api/heroes';
+
   private log(message: string) {
     this.messageService.add(`HeroService: ${message}`);
   }
@@ -27,8 +29,6 @@ export class HeroService {
       return of(result as T);
     };
   }
-
-  private heroesUrl = 'api/heroes';
 
   constructor(
     private messageService: MessageService,
@@ -60,7 +60,7 @@ export class HeroService {
 
   addHero(hero: Hero): Observable<Hero> {
     return this.http.post<Hero>(this.heroesUrl, hero, httpOptions).pipe(
-      tap((hero: Hero) => this.log(`added hero w/ id=${hero.id}`)),
+      tap((returnedHero: Hero) => this.log(`added hero w/ id=${returnedHero.id}`)),
       catchError(this.handleError<Hero>('addHero'))
     );
   }
